@@ -1930,3 +1930,45 @@ textarea.form-control {
     min-height: 340px;
   }
 }
+
+/* --------------------------------------------------------------------------
+   FONT DISPLAY — ensure text remains visible during webfont load (FCP fix)
+   -------------------------------------------------------------------------- */
+@font-face {
+  font-family: 'Cinzel';
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Playfair Display';
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Plus Jakarta Sans';
+  font-display: swap;
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Material Symbols Outlined';
+  font-display: swap;
+}
+
+/* --------------------------------------------------------------------------
+   PERFORMANCE — prevent layout shift on images (aspect-ratio hints)
+   -------------------------------------------------------------------------- */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  /* Ensures browser reserves space before image loads, eliminating CLS */
+  content-visibility: auto;
+}
+
+/* Hero background image — preload hint via CSS */
+.hero-section {
+  /* will-change tells the compositor to promote this layer early */
+  will-change: transform;
+  contain: layout style;
+}
