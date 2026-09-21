@@ -1,0 +1,35 @@
+# Cloudflare Pages / static host cache headers
+# Applied to all responses from moshhouseoffashion.com.ng
+
+# HTML — revalidate on every request so updates are always fresh
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+# CSS & JS — cache for 1 year (content-hashed in future; safe for now with versioning)
+/css/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/js/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Images — cache for 1 year
+/images/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Fonts served locally — 1 year
+/*.woff2
+  Cache-Control: public, max-age=31536000, immutable
+
+# Sitemap & robots — revalidate weekly
+/sitemap.xml
+  Cache-Control: public, max-age=604800, must-revalidate
+
+/robots.txt
+  Cache-Control: public, max-age=86400, must-revalidate
+
+# Security headers (bonus — improves Best Practices score)
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
