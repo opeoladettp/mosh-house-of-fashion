@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+
+  <!-- Homepage -->
+  <url>
+    <loc>https://www.moshhouseoffashion.com.ng/</loc>
+    <lastmod>2026-09-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://www.moshhouseoffashion.com.ng/images/director-portrait-tuxedo-closeup.jpg</image:loc>
+      <image:title>Adekunle Olalekan Moshood — Founder &amp; Creative Director, MOSH House of Fashion</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.moshhouseoffashion.com.ng/images/director-tuxedo-editorial-glow.jpg</image:loc>
+      <image:title>MOSH House of Fashion — Hero Portrait</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.moshhouseoffashion.com.ng/images/collection-asooke.jpg</image:loc>
+      <image:title>MOSH Imperial Aso-Oke Tuxedo — Signature Heritage Collection</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.moshhouseoffashion.com.ng/images/collection-adire.jpg</image:loc>
+      <image:title>MOSH Indigo Artisan Executive Jacket — Eco-Botanical Collection</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.moshhouseoffashion.com.ng/images/collection-runway.jpg</image:loc>
+      <image:title>MOSH Continental Fusion Capsule — Runway Archive</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.moshhouseoffashion.com.ng/images/director-agbada-fila-full-standing.jpg</image:loc>
+      <image:title>Adekunle Moshood in Heritage Agbada — MOSH House of Fashion</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.moshhouseoffashion.com.ng/images/director-tuxedo-chair-portrait.jpg</image:loc>
+      <image:title>Adekunle Moshood — Bespoke Tuxedo Portrait</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.moshhouseoffashion.com.ng/images/director-agbada-portrait-blue-bg.jpg</image:loc>
+      <image:title>Adekunle Moshood — Royal Blue Agbada Portrait</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.moshhouseoffashion.com.ng/images/director-tuxedo-full-side.jpg</image:loc>
+      <image:title>Adekunle Moshood — Full Length Bespoke Blazer</image:title>
+    </image:image>
+  </url>
+
+</urlset>
