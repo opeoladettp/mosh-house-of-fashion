@@ -9,13 +9,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function syncNavbarHeight() {
     if (!navbar) return;
-    const h = navbar.getBoundingClientRect().height;
-    document.documentElement.style.setProperty('--navbar-h', `${h}px`);
+    // Use rAF to avoid forced reflow before first paint (PageSpeed: forced reflow fix)
+    requestAnimationFrame(() => {
+      const h = navbar.getBoundingClientRect().height;
+      document.documentElement.style.setProperty('--navbar-h', `${h}px`);
+    });
   }
 
-  syncNavbarHeight();
+  // Defer initial sync to after first paint — eliminates forced reflow on load
+  requestAnimationFrame(syncNavbarHeight);
   window.addEventListener('resize', syncNavbarHeight);
-  // Also re-sync after fonts load to account for layout shift
   if (document.fonts && document.fonts.ready) {
     document.fonts.ready.then(syncNavbarHeight);
   }
@@ -24,6 +27,18 @@ document.addEventListener('DOMContentLoaded', () => {
   const navLinks = document.querySelectorAll('.nav-link');
   const sections = document.querySelectorAll('section[id]');
 
+  // Pre-cache section positions to avoid repeated offsetTop reads during scroll
+  let sectionCache = [];
+  function buildSectionCache() {
+    sectionCache = Array.from(sections).map(s => ({
+      el: s,
+      id: s.getAttribute('id'),
+    }));
+  }
+  // Build after fonts/layout settle
+  requestAnimationFrame(buildSectionCache);
+  window.addEventListener('resize', buildSectionCache);
+
   window.addEventListener('scroll', () => {
     if (window.scrollY > 50) {
       navbar.classList.add('scrolled');
@@ -31,23 +46,20 @@ document.addEventListener('DOMContentLoaded', () => {
       navbar.classList.remove('scrolled');
     }
 
-    // Active link highlighting on scroll
-    let scrollY = window.pageYOffset;
-    sections.forEach(current => {
-      const sectionHeight = current.offsetHeight;
-      const sectionTop = current.offsetTop - 120;
-      const sectionId = current.getAttribute('id');
-      
-      if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
+    const scrollY = window.pageYOffset;
+    sectionCache.forEach(({ el, id }) => {
+      const top = el.offsetTop - 120;
+      const bottom = top + el.offsetHeight;
+      if (scrollY > top && scrollY <= bottom) {
         navLinks.forEach(link => {
           link.classList.remove('active');
-          if (link.getAttribute('href') === `#${sectionId}`) {
+          if (link.getAttribute('href') === `#${id}`) {
             link.classList.add('active');
           }
         });
       }
     });
-  });
+  }, { passive: true });
 
   // --- 2. Mobile Navigation Toggle ---
   const mobileToggle = document.getElementById('mobileToggle');
