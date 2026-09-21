@@ -127,24 +127,61 @@ document.addEventListener('DOMContentLoaded', () => {
       const submitBtn = contactForm.querySelector('button[type="submit"]');
       const originalText = submitBtn.innerHTML;
 
-      // Simulate luxury consultation booking transmission
       submitBtn.innerHTML = '<span class="material-symbols-outlined" style="animation: spin 1s linear infinite;">sync</span> Processing Request...';
       submitBtn.disabled = true;
 
-      setTimeout(() => {
-        submitBtn.innerHTML = originalText;
-        submitBtn.disabled = false;
-        contactForm.reset();
+      // Collect optional fields for the message body
+      const fittingLocation = document.getElementById('fittingLocation')?.value || '';
+      const fittingTimeline = document.getElementById('fittingTimeline')?.value || '';
 
-        // Populate client name in confirmation modal
-        const clientSpan = document.getElementById('modalClientName');
-        if (clientSpan) clientSpan.textContent = name;
+      // Build a rich message body; extra fields are forwarded by FormSend as extra rows
+      const messageBody = [
+        notes && `Design Preferences / Notes:\n${notes}`,
+        fittingLocation && `Preferred Fitting Location: ${fittingLocation}`,
+        fittingTimeline && `Target Completion Date: ${fittingTimeline}`,
+      ].filter(Boolean).join('\n\n') || '(No additional notes provided.)';
 
-        // Open Success Modal
-        if (successModal) {
-          successModal.classList.add('active');
-        }
-      }, 900);
+      fetch('https://api.formsend.ezeroandone.io/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          api_key: '5c8dff6384fbae96286bd4d378eea30eb3efac3b7df49a30160c6d3d5e85eb03',
+          name,
+          email,
+          subject: `Bespoke Consultation Request — ${garmentType}`,
+          message: messageBody,
+          // Extra fields forwarded as additional rows in the notification email
+          phone: phone || undefined,
+          garment_commission: garmentType,
+          fitting_location: fittingLocation || undefined,
+          target_completion: fittingTimeline || undefined,
+        }),
+      })
+        .then(res => res.json())
+        .then(data => {
+          submitBtn.innerHTML = originalText;
+          submitBtn.disabled = false;
+
+          if (data.success) {
+            contactForm.reset();
+
+            // Populate client name in confirmation modal
+            const clientSpan = document.getElementById('modalClientName');
+            if (clientSpan) clientSpan.textContent = name;
+
+            // Open Success Modal
+            if (successModal) {
+              successModal.classList.add('active');
+            }
+          } else {
+            alert(`Submission error: ${data.message || 'Please try again.'}`);
+          }
+        })
+        .catch(() => {
+          submitBtn.innerHTML = originalText;
+          submitBtn.disabled = false;
+          alert('A network error occurred. Please check your connection and try again.');
+        });
     });
   }
 
